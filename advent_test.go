@@ -52,168 +52,148 @@ func TestDay1(t *testing.T) {
 }
 
 func TestDay2(t *testing.T) {
-	input := ``
-	out := advent2A(input)
-	expected := 0
-	if !cmp.Equal(out, expected) {
-		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	}
-	input = ``
-	out = advent2B(input)
-	expected = 0
+	input := `1,9,10,3,2,3,11,0,99,30,40,50`
+	out, _ := advent2A(input)
+	expected := 3500
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
+// should be 731
 func TestDay3(t *testing.T) {
-	input := ``
+	input := `R20,U5,L17,D3
+U7,R6,D4,L4`
 	out, _ := advent3A(input)
-	expected := 4
+	expected := 6
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
+	input = `L17,U5,R20,D3
+U7,R6,D20,L4,U16`
+	out, _ = advent3A(input)
+	expected = 5
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `R75,D30,R83,U83,L12,D49,R71,U7,L72
+U62,R66,U55,R34,D71,R55,D58,R83`
+	out, _ = advent3A(input)
+	expected = 159
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
+U98,R91,D20,R16,D67,R40,U7,R15,U6,R7`
+	out, _ = advent3A(input)
+	expected = 135
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `R75,D30,R83,U83,L12,D49,R71,U7,L72
+U62,R66,U55,R34,D71,R55,D58,R83`
 	out, _ = advent3B(input)
-	expected = 3
+	expected = 610
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
+U98,R91,D20,R16,D67,R40,U7,R15,U6,R7`
+	out, _ = advent3B(input)
+	expected = 410
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay4(t *testing.T) {
-	input := `[1518-11-01 00:00] Guard #10 begins shift
-[1518-11-01 00:05] falls asleep
-[1518-11-01 00:25] wakes up
-[1518-11-01 00:30] falls asleep
-[1518-11-01 00:55] wakes up
-[1518-11-01 23:58] Guard #99 begins shift
-[1518-11-02 00:40] falls asleep
-[1518-11-02 00:50] wakes up
-[1518-11-03 00:05] Guard #10 begins shift
-[1518-11-03 00:24] falls asleep
-[1518-11-03 00:29] wakes up
-[1518-11-04 00:02] Guard #99 begins shift
-[1518-11-04 00:36] falls asleep
-[1518-11-04 00:46] wakes up
-[1518-11-05 00:03] Guard #99 begins shift
-[1518-11-05 00:45] falls asleep
-[1518-11-05 00:55] wakes up`
+	input := ``
 	out, _ := advent4A(input)
-	expected := 240
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 	out, _ = advent4B(input)
-	expected = 4455
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay5(t *testing.T) {
-	input := `dabAaCBAcCcaDA`
+	input := ``
 	out, _ := advent5A(input)
-	expected := 10
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 	out, _ = advent5B(input)
-	expected = 4
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay6(t *testing.T) {
-	input := `1, 1
-1, 6
-8, 3
-3, 4
-5, 5
-8, 9`
+	input := ``
 	out, _ := advent6A(input)
-	expected := 17
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
+	input = ``
 	out, _ = advent6B(input)
-	expected = 16
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay7(t *testing.T) {
-	input := `Step C must be finished before step A can begin.
-Step C must be finished before step F can begin.
-Step A must be finished before step B can begin.
-Step A must be finished before step D can begin.
-Step B must be finished before step E can begin.
-Step D must be finished before step E can begin.
-Step F must be finished before step E can begin.`
-	// out, _ := advent7A(input)
-	// expected := "CABDFE"
-	// if !cmp.Equal(out, expected) {
-	// 	t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	// }
-	outInt, _ := advent7B(input)
-	expectedInt := 15
-	if !cmp.Equal(outInt, expectedInt) {
-		t.Errorf("Didn't match %s", cmp.Diff(outInt, expectedInt))
-	}
-	// 1175 TOO LOW
-	// !1235
-	// !1251
-}
-
-func TestDay8(t *testing.T) {
-	input := `2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2`
-	out := advent8A(input)
-	expected := 138
+	input := ``
+	out, _ := advent7A(input)
+	expected := ""
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
+	outInt, _ := advent7B(input)
+	expectedInt := 0
+	if !cmp.Equal(outInt, expectedInt) {
+		t.Errorf("Didn't match %s", cmp.Diff(outInt, expectedInt))
+	}
+}
+
+func TestDay8(t *testing.T) {
+	input := ``
+	out := advent8A(input)
+	expected := 0
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = ``
 	out = advent8B(input)
-	expected = 66
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay9(t *testing.T) {
-	input := `9 players; last marble is worth 25 points`
+	input := ``
 	out := advent9A(input)
-	expected := 32
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = `10 players; last marble is worth 1618 points`
+	input = ``
 	out = advent9A(input)
-	expected = 8317
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = `13 players; last marble is worth 7999 points`
+	input = ``
 	out = advent9A(input)
-	expected = 146373
-	if !cmp.Equal(out, expected) {
-		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	}
-	input = `17 players; last marble is worth 1104 points`
-	out = advent9A(input)
-	expected = 2764
-	if !cmp.Equal(out, expected) {
-		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	}
-	input = `21 players; last marble is worth 6111 points`
-	out = advent9A(input)
-	expected = 54718
-	if !cmp.Equal(out, expected) {
-		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	}
-	input = `30 players; last marble is worth 5807 points`
-	out = advent9A(input)
-	expected = 37305
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
@@ -225,39 +205,9 @@ func TestDay9(t *testing.T) {
 }
 
 func TestDay10(t *testing.T) {
-	input := `position=< 9,  1> velocity=< 0,  2>
-position=< 7,  0> velocity=<-1,  0>
-position=< 3, -2> velocity=<-1,  1>
-position=< 6, 10> velocity=<-2, -1>
-position=< 2, -4> velocity=< 2,  2>
-position=<-6, 10> velocity=< 2, -2>
-position=< 1,  8> velocity=< 1, -1>
-position=< 1,  7> velocity=< 1,  0>
-position=<-3, 11> velocity=< 1, -2>
-position=< 7,  6> velocity=<-1, -1>
-position=<-2,  3> velocity=< 1,  0>
-position=<-4,  3> velocity=< 2,  0>
-position=<10, -3> velocity=<-1,  1>
-position=< 5, 11> velocity=< 1, -2>
-position=< 4,  7> velocity=< 0, -1>
-position=< 8, -2> velocity=< 0,  1>
-position=<15,  0> velocity=<-2,  0>
-position=< 1,  6> velocity=< 1,  0>
-position=< 8,  9> velocity=< 0, -1>
-position=< 3,  3> velocity=<-1,  1>
-position=< 0,  5> velocity=< 0, -1>
-position=<-2,  2> velocity=< 2,  0>
-position=< 5, -2> velocity=< 1,  2>
-position=< 1,  4> velocity=< 2,  1>
-position=<-2,  7> velocity=< 2, -2>
-position=< 3,  6> velocity=<-1, -1>
-position=< 5,  0> velocity=< 1,  0>
-position=<-6,  0> velocity=< 2,  0>
-position=< 5,  9> velocity=< 1, -2>
-position=<14,  7> velocity=<-2,  0>
-position=<-3,  6> velocity=< 2, -1>`
+	input := ``
 	out := advent10A(input)
-	expected := 1
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
@@ -303,24 +253,9 @@ func TestDay11(t *testing.T) {
 }
 
 func TestDay12(t *testing.T) {
-	input := `initial state: #..#.#..##......###...###
-
-...## => #
-..#.. => #
-.#... => #
-.#.#. => #
-.#.## => #
-.##.. => #
-.#### => #
-#.#.# => #
-#.### => #
-##.#. => #
-##.## => #
-###.. => #
-###.# => #
-####. => #`
+	input := ``
 	out := advent12A(input)
-	expected := 325
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
@@ -332,41 +267,23 @@ func TestDay12(t *testing.T) {
 }
 
 func TestDay13(t *testing.T) {
-	input := `/->-\        
-|   |  /----\
-| /-+--+-\  |
-| | |  | v  |
-\-+-/  \-+--/
-  \------/   `
+	input := ``
 	out := advent13A(input)
-	expected := 1
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = `/>-<\  
-|   |  
-| /<+-\
-| | | v
-\>+</ |
-  |   ^
-  \<->/`
+	input = ``
 	out = advent13B(input)
-	expected = 1
+	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 func TestDay17(t *testing.T) {
-	input := `x=495, y=2..7
-y=7, x=495..501
-x=501, y=3..7
-x=498, y=2..4
-x=506, y=1..2
-x=498, y=10..13
-x=504, y=10..13
-y=13, x=498..504`
+	input := ``
 	out := advent17A(input)
-	expected := 57
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}

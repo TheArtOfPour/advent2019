@@ -5,69 +5,184 @@ import (
 	"strings"
 )
 
-func buildMatrix(source string) [1000][1000]int {
-	var twoD [1000][1000]int
-	stringSlice := strings.Split(source, "\n")
-	for _, s := range stringSlice {
-		claimParts := strings.Split(s, " ")
-		coords := strings.Split(claimParts[2], ",")
-		x, _ := strconv.Atoi(coords[0])
-		y, _ := strconv.Atoi(strings.TrimRight(coords[1], ":"))
-		size := strings.Split(claimParts[3], "x")
-		sizeY, _ := strconv.Atoi(strings.TrimRight(size[1], "\r"))
-		sizeX, _ := strconv.Atoi(size[0])
-		for i := x; i < x+sizeX; i++ {
-			for j := y; j < y+sizeY; j++ {
-				twoD[i][j]++
-			}
-		}
-	}
-	return twoD
+type direction string
+
+const (
+	up    direction = "U"
+	down  direction = "D"
+	left  direction = "L"
+	right direction = "R"
+)
+
+type move struct {
+	dir direction
+	mag int
 }
 
-func advent3A(test string) (int, error) {
-	total := 0
-	twoD := buildMatrix(test)
-	for i := 0; i < 1000; i++ {
-		for j := 0; j < 1000; j++ {
-			if twoD[i][j] > 1 {
-				total++
-			}
-		}
-	}
-
-	return total, nil
+type point struct {
+	x int
+	y int
+}
+type state struct {
+	point
+	steps int
 }
 
-func advent3B(test string) (int, error) {
-	claim := 0
-	twoD := buildMatrix(test)
-	stringSlice := strings.Split(test, "\n")
-	for _, s := range stringSlice {
-		claimParts := strings.Split(s, " ")
-		claimNum, _ := strconv.Atoi(strings.TrimLeft(claimParts[0], "#"))
-		coords := strings.Split(claimParts[2], ",")
-		x, _ := strconv.Atoi(coords[0])
-		y, _ := strconv.Atoi(strings.TrimRight(coords[1], ":"))
-		size := strings.Split(claimParts[3], "x")
-		sizeY, _ := strconv.Atoi(strings.TrimRight(size[1], "\r"))
-		sizeX, _ := strconv.Atoi(size[0])
-		isolated := true
-		for i := x; i < x+sizeX; i++ {
-			for j := y; j < y+sizeY; j++ {
-				if twoD[i][j] != 1 {
-					isolated = false
-					break
-				}
+type grid map[point]map[int]int
+
+func advent3A(s string) (int, error) {
+
+	data := [][]move{}
+
+	for _, l := range strings.Split(s, "\r\n") {
+		s := strings.Split(l, ",")
+		moves := []move{}
+		for _, v := range s {
+			m := move{dir: direction(v[0])}
+			mag, err := strconv.Atoi(v[1:])
+			if err != nil {
+				panic(err)
 			}
-			if !isolated {
-				break
-			}
+			m.mag = mag
+			moves = append(moves, m)
 		}
-		if isolated {
-			return claimNum, nil
+		data = append(data, moves)
+	}
+
+	g := make(grid)
+	for i := 0; i < len(data); i++ {
+		s0 := state{}
+		for j := 0; j < len(data[i]); j++ {
+			s0 = g.apply(s0, data[i][j], i)
 		}
 	}
 
-	return claim, nil
+	minDist := 9999999999
+	minDelay := minDist
+	origin := state{}
+	for k, v := range g {
+		if len(v) > 1 {
+			dst := dist(origin.point, k)
+			if dst < minDist {
+				minDist = dst
+			}
+			delay := v[0] + v[1]
+			if delay < minDelay {
+				minDelay = delay
+			}
+		}
+	}
+
+	return minDist, nil
+}
+
+func advent3B(s string) (int, error) {
+
+	data := [][]move{}
+
+	for _, l := range strings.Split(s, "\r\n") {
+		s := strings.Split(l, ",")
+		moves := []move{}
+		for _, v := range s {
+			m := move{dir: direction(v[0])}
+			mag, err := strconv.Atoi(v[1:])
+			if err != nil {
+				panic(err)
+			}
+			m.mag = mag
+			moves = append(moves, m)
+		}
+		data = append(data, moves)
+	}
+
+	g := make(grid)
+	for i := 0; i < len(data); i++ {
+		s0 := state{}
+		for j := 0; j < len(data[i]); j++ {
+			s0 = g.apply(s0, data[i][j], i)
+		}
+	}
+
+	minDist := 9999999999
+	minDelay := minDist
+	origin := state{}
+	for k, v := range g {
+		if len(v) > 1 {
+			dst := dist(origin.point, k)
+			if dst < minDist {
+				minDist = dst
+			}
+			delay := v[0] + v[1]
+			if delay < minDelay {
+				minDelay = delay
+			}
+		}
+	}
+
+	return minDelay, nil
+}
+
+func abs(a int) int {
+	if a < 0 {
+		return -1 * a
+	}
+	return a
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func dist(a, b point) int {
+	return abs(a.x-b.x) + abs(a.y-b.y)
+}
+
+func (g grid) apply(s state, m move, wire int) state {
+	switch m.dir {
+	case up:
+		for i := 0; i < m.mag; i++ {
+			s.y++
+			s.steps++
+			g.update(s, wire)
+		}
+	case down:
+		for i := 0; i < m.mag; i++ {
+			s.y--
+			s.steps++
+			g.update(s, wire)
+		}
+	case left:
+		for i := 0; i < m.mag; i++ {
+			s.x--
+			s.steps++
+			g.update(s, wire)
+		}
+	case right:
+		for i := 0; i < m.mag; i++ {
+			s.x++
+			s.steps++
+			g.update(s, wire)
+		}
+	}
+	return s
+}
+
+func (g grid) update(s state, wire int) {
+	if _, ok := g[s.point]; !ok {
+		g[s.point] = make(map[int]int)
+	}
+	if _, ok := g[s.point][wire]; !ok {
+		g[s.point][wire] = 9999999999
+	}
+	g[s.point][wire] = min(g[s.point][wire], s.steps)
 }
