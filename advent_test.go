@@ -152,7 +152,7 @@ func TestDay6(t *testing.T) {
 func TestDay7(t *testing.T) {
 	input := ``
 	out, _ := advent7A(input)
-	expected := ""
+	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}

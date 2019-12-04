@@ -35,12 +35,12 @@ func Abs(x int) int {
 }
 
 func main() {
-	fileContents, _ := ioutil.ReadFile("./inputs/day4.txt")
+	fileContents, _ := ioutil.ReadFile("./inputs/day5.txt")
 	input := string(fileContents)
-	out, _ := advent4A(input)
-	fmt.Printf("4A: %v\n", out)
-	out, _ = advent4B(input)
-	fmt.Printf("4B: %v\n\n", out)
+	out, _ := advent5A(input)
+	fmt.Printf("5A: %v\n", out)
+	out, _ = advent5B(input)
+	fmt.Printf("5B: %v\n\n", out)
 }
 
 func runAll() {
@@ -58,10 +58,17 @@ func runAll() {
 	day2B, _ := advent2B(input)
 	fmt.Printf("2B: %v\n\n", day2B)
 
-	fileContents, _ := ioutil.ReadFile("./inputs/day3.txt")
-	input := string(fileContents)
+	fileContents, _ = ioutil.ReadFile("./inputs/day3.txt")
+	input = string(fileContents)
 	day3A, _ := advent3A(input)
 	fmt.Printf("3A: %v\n", day3A)
-	day3B, _ = advent3B(input)
+	day3B, _ := advent3B(input)
 	fmt.Printf("3B: %v\n\n", day3B)
+
+	fileContents, _ = ioutil.ReadFile("./inputs/day4.txt")
+	input = string(fileContents)
+	day4A, _ := advent4A(input)
+	fmt.Printf("4A: %v\n", day4A)
+	day4B, _ := advent4B(input)
+	fmt.Printf("4B: %v\n\n", day4B)
 }
