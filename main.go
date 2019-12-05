@@ -37,9 +37,9 @@ func Abs(x int) int {
 func main() {
 	fileContents, _ := ioutil.ReadFile("./inputs/day5.txt")
 	input := string(fileContents)
-	out, _ := advent5A(input)
-	fmt.Printf("5A: %v\n", out)
-	out, _ = advent5B(input)
+	//out, _ := advent5A(input)
+	//fmt.Printf("5A: %v\n", out)
+	out, _ := advent5B(input)
 	fmt.Printf("5B: %v\n\n", out)
 }
 
