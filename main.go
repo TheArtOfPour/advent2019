@@ -27,6 +27,7 @@ func SortString(s string) string {
 	return string(r)
 }
 
+// Abs 6pack
 func Abs(x int) int {
 	if x < 0 {
 		return -x
@@ -35,12 +36,12 @@ func Abs(x int) int {
 }
 
 func main() {
-	fileContents, _ := ioutil.ReadFile("./inputs/day6.txt")
+	fileContents, _ := ioutil.ReadFile("./inputs/day9.txt")
 	input := string(fileContents)
-	day6A, _ := advent6A(input)
-	fmt.Printf("6A: %v\n", day6A)
-	day6B, _ := advent6B(input)
-	fmt.Printf("6B: %v\n\n", day6B)
+	day9A := advent9A(input)
+	fmt.Printf("9A: %v\n", day9A)
+	day9B := advent9B(input)
+	fmt.Printf("9B: %v\n\n", day9B)
 }
 
 func runAll() {
@@ -78,4 +79,25 @@ func runAll() {
 	fmt.Printf("5A: %v\n", day5A)
 	day5B, _ := advent5B(input)
 	fmt.Printf("5B: %v\n\n", day5B)
+
+	fileContents, _ = ioutil.ReadFile("./inputs/day6.txt")
+	input = string(fileContents)
+	day6A, _ := advent6A(input)
+	fmt.Printf("6A: %v\n", day6A)
+	day6B, _ := advent6B(input)
+	fmt.Printf("6B: %v\n\n", day6B)
+
+	fileContents, _ = ioutil.ReadFile("./inputs/day7.txt")
+	input = string(fileContents)
+	day7A, _ := advent7A(input)
+	fmt.Printf("7A: %v\n", day7A)
+	day7B, _ := advent7B(input)
+	fmt.Printf("7B: %v\n\n", day7B)
+
+	fileContents, _ = ioutil.ReadFile("./inputs/day8.txt")
+	input = string(fileContents)
+	day8A, _ := advent8A(input)
+	fmt.Printf("8A: %v\n", day8A)
+	day8B, _ := advent8B(input)
+	fmt.Printf("8B: %v\n\n", day8B)
 }

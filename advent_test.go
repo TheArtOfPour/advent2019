@@ -135,73 +135,115 @@ func TestDay5(t *testing.T) {
 }
 
 func TestDay6(t *testing.T) {
-	input := ``
+	input := `COM)B
+B)C
+C)D
+D)E
+E)F
+B)G
+G)H
+D)I
+E)J
+J)K
+K)L`
 	out, _ := advent6A(input)
-	expected := 0
+	expected := 42
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = ``
+	input = `COM)B
+B)C
+C)D
+D)E
+E)F
+B)G
+G)H
+D)I
+E)J
+J)K
+K)L
+K)YOU
+I)SAN`
 	out, _ = advent6B(input)
-	expected = 0
+	expected = 4
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay7(t *testing.T) {
-	input := ``
+	input := `3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0`
 	out, _ := advent7A(input)
-	expected := 0
+	expected := 43210
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	outInt, _ := advent7B(input)
-	expectedInt := 0
-	if !cmp.Equal(outInt, expectedInt) {
-		t.Errorf("Didn't match %s", cmp.Diff(outInt, expectedInt))
+	input = `3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0`
+	out, _ = advent7A(input)
+	expected = 54321
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0`
+	out, _ = advent7A(input)
+	expected = 65210
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5`
+	out, _ = advent7B(input)
+	expected = 139629729
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10`
+	out, _ = advent7B(input)
+	expected = 18216
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay8(t *testing.T) {
 	input := ``
-	out := advent8A(input)
+	out, _ := advent8A(input)
 	expected := 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = ``
-	out = advent8B(input)
-	expected = 0
+	input = `0222112222120000`
+	out, _ = advent8B(input)
+	expected = 1
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 }
 
 func TestDay9(t *testing.T) {
-	input := ``
+	input := `109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99`
 	out := advent9A(input)
-	expected := 0
+	expected := 99
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `1102,34915192,34915192,7,4,7,99,0`
+	out = advent9A(input)
+	expected = 1219070632396864
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
+	input = `104,1125899906842624,99`
+	out = advent9A(input)
+	expected = 1125899906842624
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
 	input = ``
-	out = advent9A(input)
+	out = advent9B(input)
 	expected = 0
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	input = ``
-	out = advent9A(input)
-	expected = 0
-	if !cmp.Equal(out, expected) {
-		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	}
-	// out = advent9B(input)
-	// expected = 0
-	// if !cmp.Equal(out, expected) {
-	// 	t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	// }
 }
 
 func TestDay10(t *testing.T) {

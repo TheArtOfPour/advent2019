@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var debug bool
+
 func advent5A(test string) (int, error) {
 	var s []int
 	output := 0
@@ -63,13 +65,25 @@ func advent5A(test string) (int, error) {
 
 func advent5B(test string) (int, error) {
 	var s []int
-	output := 0
 	for _, temp := range strings.Split(test, ",") {
 		i, _ := strconv.Atoi(temp)
 		s = append(s, i)
 	}
 
+	return runOpcode(s, 0, 5), nil
+}
+
+func runOpcode(opcodes []int, input int, phase int) int {
+	debug = true
+	s := make([]int, len(opcodes))
+	_ = copy(s, opcodes)
+	output := 0
 	cursor := 0
+	relative := 0
+	phaseSetting := true
+	if phase == -1 {
+		phaseSetting = false
+	}
 	for s[cursor] != 99 {
 		var p1 int
 		var p2 int
@@ -82,37 +96,60 @@ func advent5B(test string) (int, error) {
 		if s[cursor] > 99 {
 			// multi mode
 			t := int(s[cursor] / 100)
+			// position mode
 			if int((t%100)/10) == 1 {
 				p2 = s[cursor+2]
 			}
 			if t%10 == 1 {
 				p1 = s[cursor+1]
 			}
+			// relative mode
+			if int((t%100)/10) == 2 {
+				p2 = s[relative+s[cursor+2]]
+			}
+			if t%10 == 2 {
+				p1 = s[relative+s[cursor+1]]
+			}
 		}
 		if s[cursor]%100 == 1 {
 			// add
+			if debug {
+				println(fmt.Sprintf("\t%d %d+%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
+			}
 			s[s[cursor+3]] = p1 + p2
-			println(fmt.Sprintf("\t%d %d+%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 2 {
 			// multiply
+			if debug {
+				println(fmt.Sprintf("\t%d %d*%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
+			}
 			s[s[cursor+3]] = p1 * p2
-			println(fmt.Sprintf("\t%d %d*%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 3 {
 			// input to location
-			println(fmt.Sprintf("\t%d<-%d", s[cursor], s[cursor+1]))
-			s[s[cursor+1]] = 5 // for heat
+			if debug {
+				println(fmt.Sprintf("\t%d<-%d", s[cursor], s[cursor+1]))
+			}
+			if phaseSetting {
+				s[s[cursor+1]] = phase
+				phaseSetting = false
+			} else {
+				s[s[cursor+1]] = input
+			}
 			cursor = cursor + 2
 		} else if s[cursor]%100 == 4 {
 			// output from location
-			println(fmt.Sprintf("\t%d->%d", s[cursor], p1))
-			println(fmt.Sprintf("!%d", p1))
+			if debug {
+				println(fmt.Sprintf("\t%d->%d", s[cursor], p1))
+				println(fmt.Sprintf("!%d", p1))
+			}
 			output = p1
 			cursor = cursor + 2
 		} else if s[cursor]%100 == 5 {
 			// jump if true
-			println(fmt.Sprintf("\t%d %dT>%d", s[cursor], p1, p2))
+			if debug {
+				println(fmt.Sprintf("\t%d %dT>%d", s[cursor], p1, p2))
+			}
 			if p1 != 0 {
 				cursor = p2
 			} else {
@@ -120,7 +157,9 @@ func advent5B(test string) (int, error) {
 			}
 		} else if s[cursor]%100 == 6 {
 			// jump if false
-			println(fmt.Sprintf("\t%d %dF>%d", s[cursor], p1, p2))
+			if debug {
+				println(fmt.Sprintf("\t%d %dF>%d", s[cursor], p1, p2))
+			}
 			if p1 == 0 {
 				cursor = p2
 			} else {
@@ -128,7 +167,9 @@ func advent5B(test string) (int, error) {
 			}
 		} else if s[cursor]%100 == 7 {
 			// less than
-			println(fmt.Sprintf("\t%d %d<%d->%d", s[cursor], p1, p2, s[cursor+3]))
+			if debug {
+				println(fmt.Sprintf("\t%d %d<%d->%d", s[cursor], p1, p2, s[cursor+3]))
+			}
 			if p1 < p2 {
 				s[s[cursor+3]] = 1
 			} else {
@@ -136,17 +177,24 @@ func advent5B(test string) (int, error) {
 			}
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 8 {
-			// greater than
-			println(fmt.Sprintf("\t%d %d>%d->%d", s[cursor], p1, p2, s[cursor+3]))
+			// equal to
+			if debug {
+				println(fmt.Sprintf("\t%d %d>%d->%d", s[cursor], p1, p2, s[cursor+3]))
+			}
 			if p1 == p2 {
 				s[s[cursor+3]] = 1
 			} else {
 				s[s[cursor+3]] = 0
 			}
 			cursor = cursor + 4
+		} else if s[cursor]%100 == 9 {
+			// set relative
+			if debug {
+				println(fmt.Sprintf("\t%d R>%d", s[cursor], p1))
+			}
+			relative = relative + p1
+			cursor = cursor + 2
 		}
 	}
-
-	// 1433567 too low
-	return output, nil
+	return output
 }

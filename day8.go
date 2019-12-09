@@ -2,108 +2,88 @@ package main
 
 import (
 	"strconv"
-	"strings"
+	"time"
+
+	"github.com/inancgumus/screen"
 )
 
-func advent8A(test string) int {
-	// push pop off stack
-	s := make([]int, 0)
-	nodes := strings.Split(test, " ")
-	// mode := 0 // 0 node, 1 metadata
-	s = append(s, 0)
-
-	skip := false
-	total := 0
-	for i := range nodes {
-		if skip {
-			skip = false
-			continue
-		}
-		l := len(s)
-		operation := s[l-1]
-		s = s[:l-1]
-		//fmt.Printf("op %d, stack %v\n", operation, s)
-
-		if operation == 0 {
-			numberOfChildren, _ := strconv.Atoi(nodes[i])
-			numberOfMetadata, _ := strconv.Atoi(nodes[i+1])
-			//fmt.Printf("#C %d, #M %d\n", numberOfChildren, numberOfMetadata)
-			for j := 0; j < numberOfMetadata; j++ {
-				s = append(s, 1)
+func getCount(s string) int {
+	w := 25
+	h := 6
+	layers := len(s) / (w * h)
+	i := [][]int{}
+	for m := 0; m < h; m++ {
+		i = append(i, []int{})
+	}
+	result := 0
+	zeroMin := 99999999
+	for l := 0; l < layers; l++ {
+		zeroCount := 0
+		oneCount := 0
+		twoCount := 0
+		for j := l * w * h; j < (l*w*h + w*h); j++ {
+			n, _ := strconv.Atoi(string(s[j]))
+			if n == 0 {
+				zeroCount++
 			}
-			for j := 0; j < numberOfChildren; j++ {
-				s = append(s, 0)
+			if n == 1 {
+				oneCount++
 			}
-			skip = true
+			if n == 2 {
+				twoCount++
+			}
 		}
-		if operation == 1 {
-			metadata, _ := strconv.Atoi(nodes[i])
-			//fmt.Printf("M %d\n", metadata)
-			total += metadata
+		if zeroCount < zeroMin {
+			zeroMin = zeroCount
+			result = oneCount * twoCount
 		}
 	}
-	return total
+
+	return result
 }
 
-type stackEntry struct {
-	operation int
-	node      int
+func advent8A(test string) (int, error) {
+	return getCount(test), nil
 }
 
-type nodeEntry struct {
-	metadata []int
-	children []int
-}
-
-func advent8B(test string) int {
-	// push pop off stack
-	s := make([]stackEntry, 0)
-	nodes := strings.Split(test, " ")
-	// mode := 0 // 0 node, 1 metadata
-	se := stackEntry{operation: 0, node: 0}
-	s = append(s, se)
-
-	nodeEntries := make(map[int]nodeEntry)
-
-	skip := false
-	total := 0
-	nodeNum := 0
-	for i := range nodes {
-		if skip {
-			skip = false
-			continue
+func printImage(h int, w int, i []int) {
+	screen.MoveTopLeft()
+	for o := 0; o < h*w; o++ {
+		if o%w == 0 {
+			println()
 		}
-		l := len(s)
-		se := s[l-1]
-		s = s[:l-1]
-
-		if se.operation == 0 {
-			if se.node != 0 {
-				if _, ok := nodeEntries[se.node]; !ok {
-					nodeEntries[se.node] = nodeEntry{metadata: make([]int, 0), children: make([]int, 0)}
-				}
-				//nodeEntries[se.node].children = append(nodeEntries[se.node].children, nodeNum)
-			}
-			numberOfChildren, _ := strconv.Atoi(nodes[i])
-			numberOfMetadata, _ := strconv.Atoi(nodes[i+1])
-			// add node shell
-			ne := nodeEntry{metadata: make([]int, 0), children: make([]int, 0)}
-			nodeEntries[nodeNum] = ne
-			for j := 0; j < numberOfMetadata; j++ {
-				entry := stackEntry{operation: 1, node: nodeNum}
-				s = append(s, entry)
-			}
-			for j := 0; j < numberOfChildren; j++ {
-				entry := stackEntry{operation: 0, node: nodeNum}
-				s = append(s, entry)
-			}
-			skip = true
-			nodeNum++
-		}
-		if se.operation == 1 {
-			metadata, _ := strconv.Atoi(nodes[i])
-			total += metadata
+		if i[o] == 0 {
+			print(string('░'))
+		} else if i[o] == 1 {
+			print(string('█'))
+		} else {
+			print(string(' '))
 		}
 	}
-	return total
+	println()
+	time.Sleep(10 * time.Millisecond)
+}
+
+func advent8B(s string) (int, error) {
+	w := 25
+	h := 6
+	d := w * h
+	i := []int{}
+	for k := 0; k < d; k++ {
+		i = append(i, 2)
+	}
+
+	// for each layer
+	screen.Clear()
+	for j, v := range s {
+		n, _ := strconv.Atoi(string(v))
+		c := int(j % d)
+		if i[c] == 2 && n != 2 {
+			i[c] = n
+			printImage(h, w, i)
+		}
+	}
+	printImage(h, w, i)
+
+	return 0, nil
 }
