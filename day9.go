@@ -11,7 +11,7 @@ func advent9A(test string) int {
 		i, _ := strconv.Atoi(temp)
 		s[j] = i
 	}
-
+	// 3210649871 too high
 	return runOpcode(s, 1, -1)
 }
 

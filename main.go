@@ -36,12 +36,12 @@ func Abs(x int) int {
 }
 
 func main() {
-	fileContents, _ := ioutil.ReadFile("./inputs/day9.txt")
+	fileContents, _ := ioutil.ReadFile("./inputs/day10.txt")
 	input := string(fileContents)
-	day9A := advent9A(input)
-	fmt.Printf("9A: %v\n", day9A)
-	day9B := advent9B(input)
-	fmt.Printf("9B: %v\n\n", day9B)
+	day10A := advent10A(input)
+	fmt.Printf("10A: %v\n", day10A)
+	day10B := advent10B(input)
+	fmt.Printf("10B: %v\n\n", day10B)
 }
 
 func runAll() {
@@ -100,4 +100,11 @@ func runAll() {
 	fmt.Printf("8A: %v\n", day8A)
 	day8B, _ := advent8B(input)
 	fmt.Printf("8B: %v\n\n", day8B)
+
+	fileContents, _ = ioutil.ReadFile("./inputs/day9.txt")
+	input = string(fileContents)
+	day9A := advent9A2(input)
+	fmt.Printf("9A: %v\n", day9A)
+	day9B := advent9B2(input)
+	fmt.Printf("9B: %v\n\n", day9B)
 }

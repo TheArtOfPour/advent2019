@@ -253,11 +253,11 @@ func TestDay10(t *testing.T) {
 	if !cmp.Equal(out, expected) {
 		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
 	}
-	// out = advent10B(input)
-	// expected = 0
-	// if !cmp.Equal(out, expected) {
-	// 	t.Errorf("Didn't match %s", cmp.Diff(out, expected))
-	// }
+	out = advent10B(input)
+	expected = 0
+	if !cmp.Equal(out, expected) {
+		t.Errorf("Didn't match %s", cmp.Diff(out, expected))
+	}
 }
 
 func TestDay11(t *testing.T) {

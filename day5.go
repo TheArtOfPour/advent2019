@@ -87,11 +87,15 @@ func runOpcode(opcodes []int, input int, phase int) int {
 	for s[cursor] != 99 {
 		var p1 int
 		var p2 int
+		var p3 int
 		if s[cursor+1] < len(s) && s[cursor+1] >= 0 {
 			p1 = s[s[cursor+1]]
 		}
 		if s[cursor+2] < len(s) && s[cursor+2] >= 0 {
 			p2 = s[s[cursor+2]]
+		}
+		if s[cursor+3] < len(s) && s[cursor+3] >= 0 {
+			p3 = s[cursor+3]
 		}
 		if s[cursor] > 99 {
 			// multi mode
@@ -104,6 +108,9 @@ func runOpcode(opcodes []int, input int, phase int) int {
 				p1 = s[cursor+1]
 			}
 			// relative mode
+			if int((t%1000)/100) == 2 {
+				p3 = relative + s[cursor+2]
+			}
 			if int((t%100)/10) == 2 {
 				p2 = s[relative+s[cursor+2]]
 			}
@@ -113,35 +120,36 @@ func runOpcode(opcodes []int, input int, phase int) int {
 		}
 		if s[cursor]%100 == 1 {
 			// add
+			s[p3] = p1 + p2
 			if debug {
-				println(fmt.Sprintf("\t%d %d+%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
+				println(fmt.Sprintf("\t%d %d+%d->%d (%d)", s[cursor], p1, p2, p3, s[p3]))
 			}
-			s[s[cursor+3]] = p1 + p2
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 2 {
 			// multiply
+			s[p3] = p1 * p2
 			if debug {
-				println(fmt.Sprintf("\t%d %d*%d->%d (%d)", s[cursor], p1, p2, s[cursor+3], s[s[cursor+3]]))
+				println(fmt.Sprintf("\t%d %d*%d->%d (%d)", s[cursor], p1, p2, p3, s[p3]))
 			}
-			s[s[cursor+3]] = p1 * p2
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 3 {
 			// input to location
 			if debug {
-				println(fmt.Sprintf("\t%d<-%d", s[cursor], s[cursor+1]))
+				println(fmt.Sprintf("\t%d<-%d", s[cursor], p1))
 			}
 			if phaseSetting {
-				s[s[cursor+1]] = phase
+				s[p1] = phase
 				phaseSetting = false
 			} else {
-				s[s[cursor+1]] = input
+				// todo: fix
+				s[1000] = input
 			}
 			cursor = cursor + 2
 		} else if s[cursor]%100 == 4 {
 			// output from location
 			if debug {
 				println(fmt.Sprintf("\t%d->%d", s[cursor], p1))
-				println(fmt.Sprintf("!%d", p1))
+				println(fmt.Sprintf("%d", p1))
 			}
 			output = p1
 			cursor = cursor + 2
@@ -168,31 +176,31 @@ func runOpcode(opcodes []int, input int, phase int) int {
 		} else if s[cursor]%100 == 7 {
 			// less than
 			if debug {
-				println(fmt.Sprintf("\t%d %d<%d->%d", s[cursor], p1, p2, s[cursor+3]))
+				println(fmt.Sprintf("\t%d %d<%d->%d", s[cursor], p1, p2, p3))
 			}
 			if p1 < p2 {
-				s[s[cursor+3]] = 1
+				s[p3] = 1
 			} else {
-				s[s[cursor+3]] = 0
+				s[p3] = 0
 			}
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 8 {
 			// equal to
 			if debug {
-				println(fmt.Sprintf("\t%d %d>%d->%d", s[cursor], p1, p2, s[cursor+3]))
+				println(fmt.Sprintf("\t%d %d>%d->%d", s[cursor], p1, p2, p3))
 			}
 			if p1 == p2 {
-				s[s[cursor+3]] = 1
+				s[p3] = 1
 			} else {
-				s[s[cursor+3]] = 0
+				s[p3] = 0
 			}
 			cursor = cursor + 4
 		} else if s[cursor]%100 == 9 {
 			// set relative
-			if debug {
-				println(fmt.Sprintf("\t%d R>%d", s[cursor], p1))
-			}
 			relative = relative + p1
+			if debug {
+				println(fmt.Sprintf("\t%d %dR>%d", s[cursor], p1, relative))
+			}
 			cursor = cursor + 2
 		}
 	}
